@@ -1,4 +1,6 @@
 # Plana-whatsapp-bot
+Bot ini hanya difokuskan pada fitur AI-nya, belum berfokus kepada fitur-fitur menyenangkan seperti stiker generate dan sebagainya.
+
 Untuk menjalankan code-nya ada 2 cara, yaitu:
 1. Menggunakan Termux
 2. Menggunakan panel Ptetrodactyl
