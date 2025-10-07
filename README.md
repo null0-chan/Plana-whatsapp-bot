@@ -1,4 +1,11 @@
-# Plana-whatsapp-bot
+# About
+> _memory.json_ file untuk menyimpan semua percakapan user dengan bot.
+> _memory.js_ file yang berisi function untuk menghubungkan dan membaca isi dari file _memory.json_.
+> _plana.js_ berisi function tentang bagaimana AI-nya berjalan, disitu juga sudah ada komentar agar lebih mudah dipahami ataupun dibaca.
+> _index.js_ file berisi function untuk meminta pairing code untuk terhubung ke whatsapp.
+> _case.js_ file berisi prompt internal sebagai personality (untuk sementara ini, karena akan dipindahkan ke _personality.json_).
+> _.env_ file berisi API Gemini kamu.
+
 Bot ini hanya difokuskan pada fitur AI-nya, belum berfokus kepada fitur-fitur menyenangkan seperti stiker generate dan sebagainya.
 
 Untuk menjalankan code-nya ada 2 cara, yaitu:
