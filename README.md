@@ -18,7 +18,7 @@ Untuk menjalankan code-nya ada 2 cara, yaitu:
 2. ```pkg install nodejs```
 3. ```node -v``` (untuk melihat versi) minimal v18 atau bisa lebih
 4. Cari dimana letak filenya, contoh: ```cd storage/shared/download/Plana-whatsapp-bot```
-5. ```npm install dotenv``` (pastikan sudah didalam folder bot-nya) 
+5. ```npm install dotenv``` jika terjadi error bisa gunakan ```npm install dotenv --no-bin-links``` (pastikan sudah didalam folder bot-nya) 
 6. ```npm install``` jika terjadi error bisa gunakan ```npm install --no-bin-links```
 7. ```npm start```
 8. Setelah itu masukkan nomor yang ingin dipasang bot diawali 62 (only number) 
