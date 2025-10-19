@@ -5,8 +5,10 @@ Bot ini hanya difokuskan pada fitur AI-nya, belum berfokus kepada fitur-fitur me
 2. _memory.js_ file yang berisi function untuk menghubungkan dan membaca isi dari file _memory.json_.
 3. _plana.js_  berisi function tentang bagaimana AI-nya berjalan, disitu juga sudah ada komentar agar lebih mudah dipahami ataupun dibaca.
 4. _index.js_ file berisi function untuk meminta pairing code untuk terhubung ke whatsapp.
-5. _case.js_ file berisi prompt internal sebagai personality (untuk sementara ini, karena akan dipindahkan ke _personality.json_).
+5. _case.js_ file berisi function yang akan menghubung atau memanggil API untuk merespon chat.
 6. _.env_ file berisi API Gemini kamu.
+7. _personality.js_ file yang berisi function untuk menghubungkan dan membaca isi dari file _personality.json_.
+8. _personality.json_ file yang berisi persona (sifat) AI kamu atau singkatnya prompt internal.
 
 Untuk menjalankan code-nya ada 2 cara, yaitu:
 1. Menggunakan Termux
