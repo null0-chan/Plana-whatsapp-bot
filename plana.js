@@ -14,6 +14,9 @@ module.exports = async (plana, m) => {
     if (msg.key && msg.key.fromMe) return
     if (msg.key && msg.key.remoteJid === "status@broadcast") return
 
+    // 🟢 Auto-read aktif di setiap pesan masuk
+    await plana.readMessages([msg.key])
+
     // anti duplikat
     const msgId = msg.key.id || ""
     const remoteJid = msg.key.remoteJid || ""
@@ -32,51 +35,46 @@ module.exports = async (plana, m) => {
       msg.message.extendedTextMessage?.text ||
       ""
     let text = body.trim()
+    let handled = false
 
-    // cek grup / mention
-    const isGroup = sender.endsWith("@g.us")
-    const mentions =
-      msg.message?.extendedTextMessage?.contextInfo?.mentionedJid || []
+    // cek apakah chat pribadi (bukan grup)
+    const isPrivate = !sender.endsWith("@g.us")
 
-    // ambil nomor bot
-    const botNumber = plana?.user?.id
-    ? plana.user.id.split(":")[0] + "@s.whatsapp.net" // samain format jid
-      : null
+    // 🔹 Prefix / mention detection
+    const mentionRegex = /(^|\s|[,.!?])plana\b/i
+    const isMentioned = mentionRegex.test(text)
 
-    // cek apakah ada jid mention yang match nomor bot
-    const isMentioned = botNumber
-    ? mentions.includes(botNumber)
-    : false
+    // Kalau bukan private dan gak nyebut "Plana", skip
+    if (!isPrivate && !isMentioned) return
 
-    console.log("Mentions:", mentions, "BotNumber:", botNumber, "isMentioned:", isMentioned)
+    // hapus kata "Plana" biar prompt bersih
+    let userText = text.replace(/(^|\s|[,.!?])plana\b/ig, "").trim()
 
-    // kalau di grup tapi bot tidak ditag → abaikan
-    if (isGroup && !isMentioned) return
-
-    // bersihin teks mention
-    if (isGroup && isMentioned) {
-      text = text.replace(/@\d+/g, "").trim().toLowerCase()
-    } else {
-      text = text.toLowerCase()
+    // kalau ada reply (quote)
+    if (msg.message?.extendedTextMessage?.contextInfo?.quotedMessage) {
+      const quoted = msg.message.extendedTextMessage.contextInfo.quotedMessage
+      const quotedText =
+        quoted.conversation ||
+        quoted.extendedTextMessage?.text ||
+        ""
+      if (quotedText) {
+        userText =
+          (userText ? userText + "\n\n" : "") +
+          `Ini pesan yang direply:\n"${quotedText}"`
+      }
     }
 
-    // kalau cuma mention tanpa teks
-    if (isGroup && isMentioned && text === "") {
-      await plana.sendMessage(
-        sender,
-        { text: "Ya, ada apa Kakak?" },
-        { quoted: msg }
-      )
-      await plana.readMessages([msg.key])
+    // kalau cuma ngetik "Plana" doang
+    if (!userText) {
+      await plana.sendMessage(sender, { text: "Iya, ada apa? ✨" }, { quoted: msg })
       return
     }
 
-    let handled = false
+    text = userText
 
     // keyword manual
     if (text === "test") {
       await plana.sendMessage(sender, { text: "ini keyword test" }, { quoted: msg })
-      await plana.readMessages([msg.key])
       handled = true
     }
 
@@ -84,7 +82,6 @@ module.exports = async (plana, m) => {
     if (text === "/reset") {
       resetMemory(sender)
       await plana.sendMessage(sender, { text: "Memori kamu sudah dihapus, Kakak ✨" }, { quoted: msg })
-      await plana.readMessages([msg.key])
       return
     }
 
@@ -92,15 +89,23 @@ module.exports = async (plana, m) => {
       // cek cache cepat
       if (cache[sender] && cache[sender][text]) {
         await plana.sendMessage(sender, { text: cache[sender][text] }, { quoted: msg })
-        await plana.readMessages([msg.key])
         return
       }
 
+      // 🟢 Kirim animasi sedang mengetik
+      await plana.presenceSubscribe(sender)
+      await plana.sendPresenceUpdate("composing", sender)
+
+      // delay biar lebih natural
+      await new Promise((resolve) => setTimeout(resolve, 1200 + Math.random() * 1000))
+
       const aiResponse = await autoAI(sender, text)
+
+      // 🟢 Hentikan animasi mengetik
+      await plana.sendPresenceUpdate("paused", sender)
 
       if (aiResponse && !aiResponse.startsWith("⚠️")) {
         await plana.sendMessage(sender, { text: aiResponse }, { quoted: msg })
-        await plana.readMessages([msg.key])
 
         if (!cache[sender]) cache[sender] = {}
         cache[sender][text] = aiResponse
