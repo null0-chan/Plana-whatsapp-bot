@@ -1,0 +1,152 @@
+{
+  "6282295066953@s.whatsapp.net": [
+    {
+      "role": "user",
+      "content": "Halo",
+      "salt": "30bfcfee"
+    },
+    {
+      "role": "ai",
+      "content": "...Hm, halo juga. Ada apa?",
+      "salt": "2f984099"
+    }
+  ],
+  "120363402755962102@g.us": [
+    {
+      "role": "user",
+      "content": "Plana",
+      "salt": "de42fd47"
+    },
+    {
+      "role": "ai",
+      "content": "Hm? Ada apa tiba-tiba manggil? 😒",
+      "salt": "532e5da7"
+    },
+    {
+      "role": "user",
+      "content": ", jelaskan apa itu API\n\n(Pesan yang direply: \"api apaan?\")",
+      "salt": "0e805c33"
+    },
+    {
+      "role": "ai",
+      "content": "Uhm, API itu... semacam *jembatan* buat aplikasi-aplikasi biar bisa ngobrol satu sama lain.\n\n- Bayangin kamu pesan makanan online.\n- Aplikasi itu kan harus *minta data* ke restoran, terus *bayar* ke bank.\n- Nah, API ini yang ngatur semua permintaan dan balasan itu.\n\nJadi, tanpa API, aplikasi-aplikasi ini kayak orang asing yang gak ngerti bahasa satu sama lain... ribet, kan?",
+      "salt": "5d5445f4"
+    },
+    {
+      "role": "user",
+      "content": ", jelasin Bash donh",
+      "salt": "b99917a4"
+    },
+    {
+      "role": "ai",
+      "content": "Hm, Bash... itu *bahasa* buat ngasih perintah ke komputer, khususnya Linux atau macOS.\n\n- Ibaratnya kamu lagi nyuruh robot buat ngelakuin sesuatu.\n- Nah, *perintahnya* itu kamu tulis pakai Bash.\n- Contohnya, buat buka folder, hapus file, atau bahkan ngatur sistem.\n\nBiasanya, kita nulis perintah Bash di *terminal*, kayak jendela khusus buat ngomong langsung sama komputernya.\n\nGini contohnya:",
+      "salt": "52eb07fa"
+    }
+  ],
+  "120363377897319719@g.us": [
+    {
+      "role": "user",
+      "content": ",apa itu EoS?",
+      "salt": "dd7a65e6"
+    },
+    {
+      "role": "ai",
+      "content": "EoS? Ah... Maksudmu *End of Service*?\n\nItu... yah, sederhananya, ketika sebuah game berhenti beroperasi. Server ditutup, update berhenti, dan kamu nggak bisa main lagi... Sedih, kan?.",
+      "salt": "51927acc"
+    }
+  ],
+  "120363402950177071@newsletter": [
+    {
+      "role": "user",
+      "content": "Nihh~ 💌 Plugin *downloader-ig* yang Andika minta 💞\n\nlet fetch = require('node-fetch')\n\nlet handler = async (m, { conn, args, usedPrefix, command }) => {\n   if (!args[0]) throw `*Contoh:* ${usedPrefix}${command} https://www.instagram.com/p/ByxKbUSnubS/?utm_source=ig_web_copy_link`\n   \n   if (!args[0].match(/instagram/gi)) {\n       throw `URL Instagram Tidak Valid!`\n   }\n   await m.reply(wait)\n   try {\n       const api = await fetch(`https://api.botcahx.eu.org/api/dowloader/igdowloader?url=${args[0]}&apikey=${btc}`)\n       const res = await api.json()\n       \n       const limitnya = 3\n       \n       for (let i = 0; i < Math.min(limitnya, res.result.length); i++) {\n           await sleep(3000)\n           conn.sendFile(m.chat, res.result[i].url, null, `*Instagram Downloader*`, m)\n       }\n   } catch (e) {\n       throw eror\n   }\n}\n\nhandler.help = ['instagram'].map(v => v + ' <url>')\nhandler.tags = ['downloader']\nhandler.command = /^(ig|instagram|igdl|instagramdl|igstory)$/i\nhandler.limit = true\n\nmodule.exports = handler\n\nfunction sleep(ms) {\n   return new Promise(resolve => setTimeout(resolve, ms));\n}",
+      "salt": "2b5bed89"
+    },
+    {
+      "role": "ai",
+      "content": "Uhm... makasih ya, udah diingetin. Lain kali nggak usah pakai emotikon hati gitu, bikin salah paham aja... ⁄(⁄ ⁄•⁄-⁄•⁄ ⁄)⁄\n\nKode *downloader-ig* ini... yah, lumayan lah.\n\nSekilas, kodenya:\n\n- Pake `node-fetch` buat ambil data dari Instagram.\n- Ada validasi URL, jadi nggak sembarang link bisa diproses.\n- Download maksimal 3 *file* aja dari satu postingan, lumayan buat jaga *resource*.\n- Trus, ada *delay* 3 detik sebelum kirim *file* berikutnya. Biar nggak langsung *spam* kan?\n\nKalo ada yang error, ya... standar lah, langsung di-*throw*. Hmm, tapi *error handling*-nya bisa diperbaiki sih.",
+      "salt": "7b44ed35"
+    },
+    {
+      "role": "user",
+      "content": "try {\n      require.resolve('@adiwajshing/baileys');\n      console.log('\\x1b[33m%s\\x1b[0m', `🟡 Baileys library version ${require('@adiwajshing/baileys/package.json').version} is installed`);\n    } catch (e) {\n      console.error('\\x1b[31m%s\\x1b[0m', `❌ Baileys library is not installed`);\n    }\n  });\n\n  const ramInGB = os.totalmem() / (1024 * 1024 * 1024);\nconst freeRamInGB = os.freemem() / (1024 * 1024 * 1024);\n\nconsole.log('\\n\\x1b[35m╔════════════════════════════════════════════════╗\\x1b[0m');\nconsole.log('\\x1b[35m║ 💜✨ Hai sayang Andika! Selena lagi ngecek sistem nih~ ✨💜 ║\\x1b[0m');\nconsole.log('\\x1b[35m╠════════════════════════════════════════════════╣\\x1b[0m');\n\nconsole.log(`\\x1b[36m║ 🖥️ Sistem  : ${os.type()}, ${os.release()} - ${os.arch()}${' '.repeat(10)}║\\x1b[0m`);\nconsole.log(`\\x1b[36m║ 💾 Total RAM: ${ramInGB.toFixed(2)} GB${' '.repeat(12)}║\\x1b[0m`);\nconsole.log(`\\x1b[36m║ 💽 Free RAM : ${freeRamInGB.toFixed(2)} GB${' '.repeat(12)}║\\x1b[0m`);\n\nconsole.log('\\x1b[35m╠════════════════════════════════════════════════╣\\x1b[0m');\nconsole.log('\\x1b[35m║ 💌 Script selena dikembangkan oleh suami akuh~ andika >///<        ║\\x1b[0m');\nconsole.log('\\x1b[35m║ 💌 Script original dari botchax ya, jadi kalian download aja pake link dibawah (づ｡◕‿‿◕｡)づ ║\\x1b[0m');\nconsole.log('\\x1b[35m║ 🔗 Github: https://github.com/BOTCAHX/RTXZY-MD - update bareng~           ║\\x1b[0m');\nconsole.log('\\x1b[35m╚════════════════════════════════════════════════╝\\x1b[0m');\n\nconsole.log('\\x1b[36m💖 Jangan lupa, Andika, script ini selalu nemenin kamu 💖\\x1b[0m\\n');",
+      "salt": "c584a08d"
+    },
+    {
+      "role": "ai",
+      "content": "Uhm... \"sayang\"? I-itu... nggak usah manggil gitu juga, tau! >///< Tapi... makasih udah dipanggil gitu... eh, bukan apa-apa! Fokus ke kode aja deh.",
+      "salt": "74b8303b"
+    }
+  ],
+  "6287885804830@s.whatsapp.net": [
+    {
+      "role": "user",
+      "content": "pp",
+      "salt": "7a1f8ff0"
+    },
+    {
+      "role": "ai",
+      "content": "Hm? Apa maksudnya \"pp\"? ...Jangan aneh-aneh, deh. 😒",
+      "salt": "af2bb762"
+    },
+    {
+      "role": "user",
+      "content": "ichan mana",
+      "salt": "7a431883"
+    },
+    {
+      "role": "ai",
+      "content": "...Ichan ya Ichan. Kenapa malah nanyain dia sih? 😒 Gak penting.",
+      "salt": "40a57bf8"
+    },
+    {
+      "role": "user",
+      "content": "idihhh sebel\n\n(Pesan yang direply: \"...Ichan ya Ichan. Kenapa malah nanyain dia sih? 😒 Gak penting.\")",
+      "salt": "96982a38"
+    },
+    {
+      "role": "ai",
+      "content": "Iih... kenapa sih? Nyebelin kenapa coba? 😒 Gak jelas.",
+      "salt": "8b7d0a7c"
+    },
+    {
+      "role": "user",
+      "content": "kasih kata kata dulu dongg, kata kata hari ini",
+      "salt": "b8cb1ac5"
+    },
+    {
+      "role": "ai",
+      "content": "Hm... kata-kata hari ini ya? Yah, apa ya... 🤔 Jangan terlalu dipikirin apa kata orang. Yang penting kamu tahu apa yang kamu lakuin. Udah, itu aja. 😌",
+      "salt": "060cde41"
+    },
+    {
+      "role": "user",
+      "content": "lagi lagi lagi",
+      "salt": "70f94385"
+    },
+    {
+      "role": "ai",
+      "content": "Lagi lagi lagi apaan sih? 😒 Gak jelas banget. Mau apa emangnya?",
+      "salt": "c9940d24"
+    },
+    {
+      "role": "user",
+      "content": "gapapa",
+      "salt": "2a7629c0"
+    },
+    {
+      "role": "ai",
+      "content": "Gapapa apaan...? 🙄 Serius deh, jangan bikin bingung.",
+      "salt": "d7dfd0c1"
+    },
+    {
+      "role": "user",
+      "content": "udah cepet kasih kata kata hari ini",
+      "salt": "acde9a88"
+    },
+    {
+      "role": "ai",
+      "content": "Iya... iya... sabar napa sih? 😒\n\nEhm... Kata-kata hari ini... *Jangan sok tahu kalau emang gak tahu.* Udah, itu aja. Puas? 😌",
+      "salt": "4c24a1aa"
+    }
+  ]
+}
