@@ -2,15 +2,16 @@
 Bot ini hanya difokuskan pada fitur AI-nya, belum berfokus kepada fitur-fitur menyenangkan seperti stiker generate dan sebagainya.
 
 ### Struktur file
-1. _memory.json_ file untuk menyimpan semua percakapan user dengan bot.
-2. _memory.js_ file yang berisi function untuk menghubungkan dan membaca isi dari file _memory.json_.
-3. _plana.js_  berisi function tentang bagaimana AI-nya berjalan, disitu juga sudah ada komentar agar lebih mudah dipahami ataupun dibaca.
-4. _index.js_ file berisi function untuk meminta pairing code untuk terhubung ke whatsapp.
-5. _case.js_ file berisi function yang akan menghubung atau memanggil API untuk merespon chat.
-6. _.env_ file berisi API Gemini kamu.
-7. _personality.js_ file yang berisi function untuk menghubungkan dan membaca isi dari file _personality.json_.
-8. _personality.json_ file yang berisi persona (sifat) AI kamu atau singkatnya prompt internal.
-9. _reminder.js_ file yang berisi function untuk membaca isi dari _reminder.json_
+1. ```memory.json``` file untuk menyimpan semua percakapan user dengan bot.
+2. ```memory.js``` file yang berisi function untuk menghubungkan dan membaca isi dari file ```memory.json```.
+3. ```plana.js```  berisi function tentang bagaimana AI-nya berjalan, disitu juga sudah ada komentar agar lebih mudah dipahami ataupun dibaca.
+4. ```index.js``` file berisi function untuk meminta pairing code untuk terhubung ke whatsapp.
+5. ```case.js``` file berisi function yang akan menghubung atau memanggil API untuk merespon chat.
+6. ```.env``` file berisi API Gemini kamu.
+7. ```personality.js``` file yang berisi function untuk menghubungkan dan membaca isi dari file ```personality.json```.
+8. ```personality.json``` file yang berisi persona (sifat) AI kamu atau singkatnya prompt internal.
+9. ```reminder.js``` file yang berisi function untuk membaca isi dari ```reminder.json```
+10. ```lapor.js``` file function untuk fitur 'lapor' yang dikirim dari user ke owner. Intinya buat laporan. command: ```.lapor``` (isi laporan) example: ```.lapor Fitur lapor rusak```
 
 Untuk menjalankan code-nya ada 2 cara, yaitu:
 1. Menggunakan Termux
