@@ -1,14 +1,17 @@
+//======================
+//🔹Module Configuration
+//======================
 const fs = require("fs")
 const path = require("path")
-const { autoAI } = require("./case")
+const { autoAI } = require("./autoAI")
 const { resetMemory } = require("./commands/memory")
 
-// Cache cepat per-user (untuk respon yang sama)
+// Cache cepat & Lock per-user
 const cache = {}
 if (!global.processedMsgIds) global.processedMsgIds = new Map()
-if (!global.userLocks) global.userLocks = new Map() // 🔒 Lock per-user biar gak double eksekusi
+if (!global.userLocks) global.userLocks = new Map() 
 
-// 🩷 Load personality.json (sekali aja di awal)
+// 🩷 Load personality.json
 const personalityPath = path.join(__dirname, "commands", "dataBase", "personality.json")
 const personalityData = JSON.parse(fs.readFileSync(personalityPath, "utf8"))
 const persona = [
@@ -21,7 +24,7 @@ const persona = [
 function getPlanaMood(text) {
   const romanticTriggers = [
     "sayang", "cantik", "manis", "imut",
-    "gemes", "lucu", "plana cantik", "plana sayang"
+    "gemes", "lucu", "plana cantik", "manja", "plana sayang"
   ]
   const lower = text.toLowerCase()
   return romanticTriggers.some(trigger => lower.includes(trigger))
@@ -83,7 +86,7 @@ module.exports = async (plana, m) => {
     const isPrivate = !sender.endsWith("@g.us")
     const mentionRegex = /(^|\s|[,.!?])plana\b/i
     const isMentioned = mentionRegex.test(text)
-    if (!isPrivate && !isMentioned && !text.toLowerCase().startsWith(".lapor")) {
+    if (!isPrivate && !isMentioned && !text.trim().startsWith(".")) {
   global.userLocks.delete(sender)
   return
 }
@@ -112,14 +115,45 @@ module.exports = async (plana, m) => {
     if (userText.startsWith(prefix)) {
       const command = userText.slice(prefix.length).trim().split(" ")[0].toLowerCase()
 
+    if (userText.startsWith(".") && !["lapor","chat-on","chat-off","chat-status","test","reset"].includes(command)) {
+  global.userLocks.delete(sender)
+  return
+}
+
       // 🔹 Panggil modul sesuai command
-      // di dalam handler prefix
     if (command === "lapor") {
       const { handleReport } = require("./commands/lapor")
       await handleReport(plana, msg, userText, prefix)
       global.userLocks.delete(sender)
       return
     }
+
+    //============================
+    // 🔹 Key on/off fitur auto AI
+    //============================
+    if (!global.planaAIEnabled === undefined) global.planaAIEnabled = true
+    
+    if (command === "chat-on") {
+      global.planaAIEnabled = true
+      await plana.sendMessage(sender, { text: "✨ AutoAI aktif kembali." }, { quoted: msg })
+      global.userLocks.delete(sender)
+      return
+    }
+    
+    if (command === "chat-off") {
+      global.planaAIEnabled = false
+      await plana.sendMessage(sender, { text: "❌ AutoAI dimatikan." }, { quoted: msg })
+      global.userLocks.delete(sender)
+      return
+    }
+    
+    if (command === "chat-status") {
+      const status = global.planaAIEnabled ? "AKTIF ✨" : "NONAKTIF ❌"
+      await plana.sendMessage(sender, { text: `📊 Status AutoAI: ${status}` }, { quoted: msg })
+      global.userLocks.delete(sender)
+      return
+    }
+   }
 
       // 🔹 Keyword manual
       if (userText === "test") {
@@ -134,7 +168,6 @@ module.exports = async (plana, m) => {
         global.userLocks.delete(sender)
         return
       }
-    }
 
     // 🔹 Cegah spam dengan cache respon
     if (cache[sender] && cache[sender][userText]) {
@@ -142,10 +175,16 @@ module.exports = async (plana, m) => {
       return
     }
 
-    // ✍️ Simulasi “typing”
+    // ✍️ Simulasi typing 
     await plana.presenceSubscribe(sender)
     await plana.sendPresenceUpdate("composing", sender)
     await new Promise(r => setTimeout(r, 1200 + Math.random() * 1000))
+
+    // Jika autoAI dimatikan, bot tidak menjawab
+    if (!global.planaAIEnabled) {
+      global.userLocks.delete(sender)
+      return
+    }
 
     const mood = getPlanaMood(userText)
     let aiResponse
