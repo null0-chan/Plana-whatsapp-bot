@@ -75,6 +75,14 @@ plana.ev.on("connection.update", (update) => {
         // 🔔 Jalankan reminder otomatis setelah konek ke WA
         const { startReminder } = require("./commands/reminder")
         startReminder(plana)
+
+        // Status always active
+        plana.sendPresenceUpdate("available").catch(err =>
+            console.warn("⚠️ Gagal update status available:", err.message)
+        )
+
+        // Load module watch status
+    require("./commands/plana-reaction")(plana)
     }
 })
 
