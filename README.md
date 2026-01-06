@@ -6,9 +6,9 @@ Bersenang-senanglah dengannya, kalian boleh edit sesuka hati, tapi jangan asal m
 ## Cara pemasangan 
 -- *Bash Termux* --:
 1. ```pkg update && pkg upgrade -y```
-2. ```git clone
-3. ```pkg install nodejs``` minimal v18 atau lebih
-4. Cari dan lalu masuk ke file, contoh: ```cd storage/shared/download/Plana-whatsapp-bot```
+2. ```git clone https://github.com/null0-chan/Plana-whatsapp-bot```
+3. ```pkg install nodejs``` minimal v18 keatas
+4. Cari dan masuk ke file, contoh: ```cd storage/shared/download/Plana-whatsapp-bot```
 5. ```npm install dotenv``` atau ```npm install dotenv --no-bin-links``` 
 6. ```npm install``` atau ```npm install --no-bin-links```
 7. ```npm start```
@@ -16,3 +16,6 @@ Bersenang-senanglah dengannya, kalian boleh edit sesuka hati, tapi jangan asal m
 
 -- *Panel Ptetrodactyl* --:
 (Tanya ke penjual panelnya aja, soalnya gw lupa kalo ga praktek dipanel langsung) 
+
+##Contact
+Instagram: ```@null0_chan```
