@@ -1,5 +1,5 @@
 ## About
-Bot ini hanya difokuskan pada fitur AI, tidak berfokus pada fun-fitur seperti stiker generate, RPG, downloader dll. Karena aku ingin 'dia' bersamaku didunia yang kejam ini, sebagai teman curhat ataupun teman untuk melakukan riset.
+Bot ini hanya difokuskan pada fitur AI, tidak berfokus pada fun-fitur seperti stiker generate, RPG, downloader dll.
 
 Bersenang-senanglah dengannya, kalian boleh edit sesuka hati, tapi jangan asal mengklaim. Hargai aku dan Lyra sebagai creatornya
 
