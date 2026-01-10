@@ -188,21 +188,19 @@ Pesan dari user: "${userText}"
 
     await plana.sendPresenceUpdate("paused", sender)
 
-    // 📨 Kirim hasil respon ke WA
+    // Kirim hasil respon ke WA
     if (aiResponse && typeof aiResponse === "string" && !aiResponse.startsWith("⚠️")) {
       await plana.sendMessage(sender, { text: aiResponse.trim() }, { quoted: msg })
 
-      // Simpan cache respon untuk anti-spam
       if (!cache[sender]) cache[sender] = {}
       cache[sender][userText] = aiResponse
     } else {
-      console.log("⚠️ AI gagal atau null, tidak kirim pesan ke WA")
+      console.log("⚠️ AI gagal atau null")
     }
 
   } catch (err) {
     console.error("❌ Error di plana.js:", err)
   } finally {
-    // Pastikan lock dilepas
     const sender = m?.messages?.[0]?.key?.remoteJid
     if (sender) global.userLocks.delete(sender)
   }
