@@ -11,7 +11,7 @@ const cache = {}
 if (!global.processedMsgIds) global.processedMsgIds = new Map()
 if (!global.userLocks) global.userLocks = new Map() 
 
-// 🩷 Load personality.json
+// Load personality.json
 const personalityPath = path.join(__dirname, "commands", "dataBase", "personality.json")
 const personalityData = JSON.parse(fs.readFileSync(personalityPath, "utf8"))
 const persona = [
@@ -20,7 +20,7 @@ const persona = [
   personalityData.plana.behavior
 ].filter(Boolean).join("\n\n")
 
-// 🩷 Mood Detector Function
+// Mood Detector Function
 function getPlanaMood(text) {
   const romanticTriggers = [
     "sayang", "cantik", "manis", "imut",
@@ -34,14 +34,12 @@ function getPlanaMood(text) {
 
 module.exports = async (plana, m) => {
   try {
-    // ✅ Pastikan format pesan valid
     const msg = m?.messages?.[0]
     if (!msg?.message) return
 
     const sender = msg.key?.remoteJid
     if (!sender) return
 
-    // 🚫 Abaikan pesan dari diri sendiri & broadcast
     if (msg.key.fromMe || sender === "status@broadcast") return
 
     const msgId = msg.key.id || ""
@@ -49,25 +47,19 @@ module.exports = async (plana, m) => {
     const now = Date.now()
     const DUP_WINDOW = 30 * 1000 // 30 detik
 
-    // 🧹 Hapus entri lama di processedMsgIds
     for (const [k, ts] of global.processedMsgIds) {
       if (now - ts > DUP_WINDOW) global.processedMsgIds.delete(k)
     }
 
-    // 🚫 Cegah pesan duplikat
     if (global.processedMsgIds.has(processedKey)) return
     global.processedMsgIds.set(processedKey, now)
 
-    // 🔒 Lock per-user (biar gak dobel eksekusi)
     if (global.userLocks.get(sender)) return
     global.userLocks.set(sender, true)
 
-    // 📖 Auto-read message
     try {
       await plana.readMessages([msg.key])
-    } catch (err) {
-      console.warn("⚠️ Gagal auto-read:", err.message)
-    }
+    } catch {}
 
     // Ambil isi teks
     const body =
@@ -77,48 +69,38 @@ module.exports = async (plana, m) => {
       msg.message.videoMessage?.caption ||
       ""
     let text = body.trim()
-    if (!text) {
-      global.userLocks.delete(sender)
-      return
-    }
+    if (!text) return
 
-    // 🔹 Cek apakah grup atau private
     const isPrivate = !sender.endsWith("@g.us")
     const mentionRegex = /(^|\s|[,.!?])plana\b/i
     const isMentioned = mentionRegex.test(text)
-    if (!isPrivate && !isMentioned && !text.trim().startsWith(".")) {
-  global.userLocks.delete(sender)
-  return
-}
 
-    // Hapus kata "Plana" biar prompt lebih natural
+    // COMMAND prefix
+    const prefix = "."
+    const isCommand = text.startsWith(prefix)
+
+    if (!isPrivate && !isMentioned && !isCommand) return
     let userText = text.replace(/(^|\s|[,.!?])plana\b/ig, "").trim()
+    if (!userText) userText = text
 
-    // Jika user reply pesan
+    // Quoted message
     const quoted = msg.message?.extendedTextMessage?.contextInfo?.quotedMessage
+    let quotedText = ""
+
     if (quoted) {
-      const quotedText =
+      quotedText =
         quoted.conversation ||
         quoted.extendedTextMessage?.text ||
         quoted.imageMessage?.caption ||
         ""
-      if (quotedText) {
-        userText += `\n\n(Pesan yang direply: "${quotedText}")`
-      }
     }
 
-    // Kalau teks kosong setelah dihapus "Plana"
-    if (!userText) userText = text
-
-    // 🔹 Deteksi prefix command
-    const prefix = "."
+    // Commands
     if (userText.startsWith(prefix)) {
       const command = userText.slice(prefix.length).trim().split(" ")[0].toLowerCase()
+      const allowedCommands = ["lapor", "chat-on", "chat-off", "chat-status", "test", "reset"]
 
-    if (userText.startsWith(".") && !["lapor","chat-on","chat-off","chat-status","test","reset"].includes(command)) {
-  global.userLocks.delete(sender)
-  return
-}
+      if (!allowedCommands.includes(command)) return
 
       // 🔹 Panggil modul sesuai command
     if (command === "lapor") {
@@ -131,7 +113,7 @@ module.exports = async (plana, m) => {
     //============================
     // 🔹 Key on/off fitur auto AI
     //============================
-    if (!global.planaAIEnabled === undefined) global.planaAIEnabled = true
+    if (global.planaAIEnabled === undefined) global.planaAIEnabled = true
     
     if (command === "chat-on") {
       global.planaAIEnabled = true
@@ -148,7 +130,7 @@ module.exports = async (plana, m) => {
     }
     
     if (command === "chat-status") {
-      const status = global.planaAIEnabled ? "AKTIF ✨" : "NONAKTIF ❌"
+      const status = global.planaAIEnabled ? "Online" : "Offline"
       await plana.sendMessage(sender, { text: `📊 Status AutoAI: ${status}` }, { quoted: msg })
       global.userLocks.delete(sender)
       return
@@ -164,18 +146,17 @@ module.exports = async (plana, m) => {
 
       if (userText === "/reset") {
         await resetMemory(sender)
-        await plana.sendMessage(sender, { text: "Memori kamu sudah dihapus, kak ✨" }, { quoted: msg })
+        await plana.sendMessage(sender, { text: "Memori kamu sudah dihapus 🥀" }, { quoted: msg })
         global.userLocks.delete(sender)
         return
       }
 
-    // 🔹 Cegah spam dengan cache respon
     if (cache[sender] && cache[sender][userText]) {
       global.userLocks.delete(sender)
       return
     }
 
-    // ✍️ Simulasi typing 
+    // Simulasi typing 
     await plana.presenceSubscribe(sender)
     await plana.sendPresenceUpdate("composing", sender)
     await new Promise(r => setTimeout(r, 1200 + Math.random() * 1000))
