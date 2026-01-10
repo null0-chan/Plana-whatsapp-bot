@@ -1,6 +1,6 @@
-//======================
-//🔹Module Configuration
-//======================
+//================================
+//🔹Module Configuration & Command
+//================================
 const fs = require("fs")
 const path = require("path")
 const { autoAI } = require("./autoAI")
@@ -117,14 +117,14 @@ module.exports = async (plana, m) => {
     
     if (command === "chat-on") {
       global.planaAIEnabled = true
-      await plana.sendMessage(sender, { text: "✨ AutoAI aktif kembali." }, { quoted: msg })
+      await plana.sendMessage(sender, { text: "AutoAI Online." }, { quoted: msg })
       global.userLocks.delete(sender)
       return
     }
     
     if (command === "chat-off") {
       global.planaAIEnabled = false
-      await plana.sendMessage(sender, { text: "❌ AutoAI dimatikan." }, { quoted: msg })
+      await plana.sendMessage(sender, { text: "AutoAI Offline." }, { quoted: msg })
       global.userLocks.delete(sender)
       return
     }
@@ -138,7 +138,7 @@ module.exports = async (plana, m) => {
    }
 
       // 🔹 Keyword manual
-      if (userText === "test") {
+      if (userText === "/test") {
         await plana.sendMessage(sender, { text: "ini keyword test" }, { quoted: msg })
         global.userLocks.delete(sender)
         return
@@ -161,7 +161,7 @@ module.exports = async (plana, m) => {
     await plana.sendPresenceUpdate("composing", sender)
     await new Promise(r => setTimeout(r, 1200 + Math.random() * 1000))
 
-    // Jika autoAI dimatikan, bot tidak menjawab
+    // Jika autoAI dimatikan
     if (!global.planaAIEnabled) {
       global.userLocks.delete(sender)
       return
